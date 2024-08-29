@@ -14,7 +14,13 @@ start_z = 50
 # tempo of the song
 tempo = 100  #bpm
 
-##### END OF INPUTS ##### ONLY NERDS MAY PASS THIS LINE #####
+# reference note
+x_A4 = 10600
+y_A4 = 8450
+z_A3 = 525
+
+
+##### END OF INPUTS - ONLY NERDS MAY PASS THIS LINE #####
 
 
 
@@ -22,7 +28,7 @@ tempo = 100  #bpm
 
 ##### Note Dictionaries #####
 melody_dictionary = {
-    'ref': 10600,  # A4 ~ 440Hz
+    'ref': x_A4,  # A4 ~ 440Hz
     'G3': -14,
     'Gs3': -13,
     'Af3': -13,
@@ -81,7 +87,7 @@ melody_dictionary = {
 }
 
 mid_dictionary = {
-    'ref': 8450, #4225  # issue
+    'ref': y_A4, #4225  # issue
     'A2': -24,
     'As2': -23,
     'Bf2': -23,
@@ -154,7 +160,7 @@ mid_dictionary = {
 }
 
 bass_dictionary = {
-    'ref': 525,
+    'ref': z_A3,
     'E1':-29,
     'F1': -28,
     'Fs1': -27,
@@ -219,14 +225,14 @@ bass_dictionary = {
 
 ##### functions #####
 
-# takes in note and dictionary, spits out feedrate
+# takes in note and dictionary, spits out feedrate for one axis
 def frequency_finder(note, dictionary):
     global tempo
 
     if note == 'r':
         return 0  # return feed rate of 0 for rests
     else:
-        return dictionary['ref'] * 2 ** (dictionary[note] / 12)
+        return dictionary['ref'] * 2 ** (dictionary[note] / 12)    # (reference speed) * 2^((note offset)/12)
 
 
 
@@ -326,10 +332,9 @@ def z(speed, this_note, last_note):
             last_z = current_z
             current_z = current_z + move_length
 
+# takes in x, y, and z distances, finds speed of combined move
 def vector_finder(x_, y_, z_):
-    #print(f"x_dist: {x_}")
     vec_length = math.sqrt(x_ ** 2 + y_ ** 2 + z_ ** 2)
-    #print(f"vec_length: {vec_length}")
     return vec_length / (15 / tempo) * 60
 
 
