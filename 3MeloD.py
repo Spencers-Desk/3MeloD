@@ -5,11 +5,10 @@ import math
 # Song name (directory)
 song_name = "Sea Shanty 2"
 
-# Position you want printer to start in (mm)
-start_x = 100
-start_y = 100
-start_z = 50
-
+# Printer Dimensions
+x_dim = 250
+y_dim = 250
+z_dim = 250
 
 # tempo of the song
 tempo = 100  #bpm
@@ -17,7 +16,7 @@ tempo = 100  #bpm
 # reference note
 x_A4 = 10600
 y_A4 = 8450
-z_A3 = 525
+z_A3 = 1050#525
 
 
 ##### END OF INPUTS - ONLY NERDS MAY PASS THIS LINE #####
@@ -235,102 +234,37 @@ def frequency_finder(note, dictionary):
         return dictionary['ref'] * 2 ** (dictionary[note] / 12)    # (reference speed) * 2^((note offset)/12)
 
 
-
-# X kinematics
-def x(speed, this_note, last_note):
+def kinematics(speed, this_note, last_note, dim, current_pos, last_pos):
     global tempo
-    global current_x
-    global last_x
 
+    mid_pos = dim/2
     move_length = speed / 60 * (15 / tempo)
+
     if this_note != last_note: # different note being played
-        if current_x <= 125:
-            last_x = current_x
-            current_x = current_x + move_length
-        elif current_x > 125:
-            last_x = current_x
-            current_x = current_x - move_length
+        if current_pos <= mid_pos:
+            last_pos = current_pos
+            current_pos = current_pos + move_length
+        elif current_pos > mid_pos:
+            last_pos = current_pos
+            current_pos = current_pos - move_length
         else:
-            print('Error traveled outside X range')
-    if this_note == last_note and last_x < current_x: # moving negative to positive
-        if (current_x + move_length) < 250:
-            last_x = current_x
-            current_x = current_x + move_length
+            print('Error traveled outside range')
+    if this_note == last_note and last_pos < current_pos: # moving negative to positive
+        if (current_pos + move_length) < 250:
+            last_pos = current_pos
+            current_pos = current_pos + move_length
         else:
-            last_x = current_x
-            current_x = current_x - move_length
-    if this_note == last_note and last_x > current_x: # moving positive to negative
-        if (current_x - move_length) > 5:
-            last_x = current_x
-            current_x = current_x - move_length
+            last_pos = current_pos
+            current_pos = current_pos - move_length
+    if this_note == last_note and last_pos > current_pos: # moving positive to negative
+        if (current_pos - move_length) > 5:
+            last_pos = current_pos
+            current_pos = current_pos - move_length
         else:
-            last_x = current_x
-            current_x = current_x + move_length
+            last_pos = current_pos
+            current_pos = current_pos + move_length
 
-
-
-# Y kinematics
-def y(speed, this_note, last_note):
-    global tempo
-    global current_y
-    global last_y
-
-    move_length = speed / 60 * (15 / tempo)
-    if this_note != last_note: # different note being played
-        if current_y <= 125:
-            last_y = current_y
-            current_y = current_y + move_length
-        elif current_y > 125:
-            last_y = current_y
-            current_y = current_y - move_length
-        else:
-            print('Error traveled outside y range')
-    if this_note == last_note and last_y < current_y: # moving negative to positive
-        if (current_y + move_length) < 250:
-            last_y = current_y
-            current_y = current_y + move_length
-        else:
-            last_y = current_y
-            current_y = current_y - move_length
-    if this_note == last_note and last_y > current_y: # moving positive to negative
-        if (current_y - move_length) > 5:
-            last_y = current_y
-            current_y = current_y - move_length
-        else:
-            last_y = current_y
-            current_y = current_y + move_length
-
-
-# Z kinematics
-def z(speed, this_note, last_note):
-    global tempo
-    global current_z
-    global last_z
-
-    move_length = speed / 60 * (15 / tempo)
-    if this_note != last_note: # different note being played
-        if current_z <= 50:
-            last_z = current_z
-            current_z = current_z + move_length
-        elif current_z > 50:
-            last_z = current_z
-            current_z = current_z - move_length
-        else:
-            print('Error traveled outside z range')
-    if this_note == last_note and last_z < current_z: # moving negative to positive
-        if (current_z + move_length) < 250:
-            last_z = current_z
-            current_z = current_z + move_length
-        else:
-            last_z = current_z
-            current_z = current_z - move_length
-    if this_note == last_note and last_z > current_z: # moving positive to negative
-        if (current_z - move_length) > 5:
-            last_z = current_z
-            current_z = current_z - move_length
-        else:
-            last_z = current_z
-            current_z = current_z + move_length
+    return current_pos, last_pos
 
 # takes in x, y, and z distances, finds speed of combined move
 def vector_finder(x_, y_, z_):
@@ -348,13 +282,14 @@ mid_notes = []
 bass_notes = []
 
 # "last" position doesn't exist yet, so is defined here
-current_x = start_x
-current_y = start_y
-current_z = start_z
 
-last_x = start_x
-last_y = start_y
-last_z = start_z
+current_x = x_dim/2
+current_y = y_dim/2
+current_z = z_dim/2
+
+last_x = current_x
+last_y = current_y
+last_z = current_z
 
 melody = song_name
 mid = song_name
@@ -377,12 +312,6 @@ with open(bass, "r") as f:
         bass_notes.append(line.rstrip())
 
 
-
-# create arrays that hold movement speed for melody (x), mid (y), and bass (z)
-melody_speed = []
-mid_speed = []
-bass_speed = []
-
 # assemble text file name
 file_name = song_name
 file_name += '/'
@@ -395,11 +324,11 @@ myfile = open(file_name, 'w')
 start_gcode = "G28\n"
 # move to start position
 start_gcode += "G1 X"
-start_gcode += str(start_x)
+start_gcode += str(current_x)
 start_gcode += " Y"
-start_gcode += str(start_y)
+start_gcode += str(current_y)
 start_gcode += " Z"
-start_gcode += str(start_z)
+start_gcode += str(current_z)
 start_gcode += " F1000\n"
 # pause for 1 second
 start_gcode += "G4 P1000\n"
@@ -411,11 +340,10 @@ for i in range(0, len(melody_notes) - 1):
     # check if there are any notes playing on current beat - if not, issue a pause
     if melody_notes[i] == 'r' and mid_notes[i] == 'r' and bass_notes[i] == 'r':
         myfile.write(f"G4 P{15 / tempo * 1000}\n")
-    #
     else:
-        melody_speed.append(x(frequency_finder(melody_notes[i], melody_dictionary), melody_notes[i], melody_notes[i-1]))
-        mid_speed.append(y(frequency_finder(mid_notes[i], mid_dictionary), mid_notes[i], mid_notes[i-1]))
-        bass_speed.append(z(frequency_finder(bass_notes[i], bass_dictionary), bass_notes[i], bass_notes[i-1]))
+        current_x, last_x = kinematics(frequency_finder(melody_notes[i], melody_dictionary), melody_notes[i], melody_notes[i-1], x_dim, current_x, last_x)
+        current_y, last_y = kinematics(frequency_finder(mid_notes[i], mid_dictionary), mid_notes[i], mid_notes[i - 1], y_dim, current_y, last_y)
+        current_z, last_z = kinematics(frequency_finder(bass_notes[i], bass_dictionary), bass_notes[i], bass_notes[i - 1], z_dim, current_z, last_z)
 
         dist_x = current_x - last_x
         dist_y = current_y - last_y
