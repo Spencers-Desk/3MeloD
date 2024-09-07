@@ -1,0 +1,12 @@
+# --SONG SPECIFIC INPUTS-- #
+# you need to have the melody.txt, mid.txt, and bass.txt inside a folder named after the song
+# Song name (directory)
+song_name = "Fur Elise 1"
+song_directory = "Fur Elise/Fur Elise 1"
+
+# tempo of the song - sixteenth note is unit - if you used an eighth note rhythm divide your tempo by 2
+tempo = 68  #bpm
+
+x_octave_adj = 0
+y_octave_adj = 0
+z_octave_adj = -1

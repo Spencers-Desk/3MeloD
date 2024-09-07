@@ -1,33 +1,60 @@
 import math
 
 ##### Inputs #####
+# --SONG SPECIFIC INPUTS-- #
 # you need to have the melody.txt, mid.txt, and bass.txt inside a folder named after the song
 # Song name (directory)
-song_name = "Sea Shanty 2"
+song_name = "Fur Elise 3"
+song_directory = "Fur Elise/Fur Elise 3"
+
+# tempo of the song - sixteenth note is unit - if you used an eighth note rhythm divide your tempo by 2
+tempo = 68  #bpm
+
+x_octave_adj = 0
+y_octave_adj = 0
+z_octave_adj = -1
+
+# --MACHINE PARAMETERS-- #
+# motor angle per step - commonly 3.6 - some are 1.8
+x_ang = 3.6#1.8 #
+y_ang = 3.6#1.8 #
+z_ang = 3.6#1.8 #
+
+# rotation distance per revolution (mm)
+x_rpr = 40#32 #
+y_rpr = 32#32 #
+z_rpr = 8#4 #
 
 # Printer Dimensions
-x_dim = 250
-y_dim = 250
-z_dim = 250
+x_dim = 240#180 #
+y_dim = 240#180 #
+z_dim = 250#180 #
 
-# tempo of the song
-tempo = 100  #bpm
 
-# reference note
-x_A4 = 10600
-y_A4 = 8450
-z_A3 = 1050#525
+
+
+
 
 
 ##### END OF INPUTS - ONLY NERDS MAY PASS THIS LINE #####
 
+# reference frequency
+f_ref = 440  #Hz "A4"
 
+# steps per revolution divided by distance per revolution = steps/distance
+x_stepdist = (360/x_ang) / x_rpr
+y_stepdist = (360/y_ang) / y_rpr
+z_stepdist = (360/z_ang) / z_rpr
+
+x_A4_feedrate = (f_ref / x_stepdist) * 60 * 2**x_octave_adj
+y_A4_feedrate = (f_ref / y_stepdist) * 60 * 2**y_octave_adj
+z_A4_feedrate = (f_ref / z_stepdist) * 60 * 2**z_octave_adj
 
 
 
 ##### Note Dictionaries #####
 melody_dictionary = {
-    'ref': x_A4,  # A4 ~ 440Hz
+    'ref': x_A4_feedrate,  # A4 ~ 440Hz
     'G3': -14,
     'Gs3': -13,
     'Af3': -13,
@@ -86,7 +113,14 @@ melody_dictionary = {
 }
 
 mid_dictionary = {
-    'ref': y_A4, #4225  # issue
+    'ref': y_A4_feedrate, #4225  # issue
+    'E2': -29,
+    'F2': -28,
+    'Fs2': -27,
+    'Gf2': -27,
+    'G2': -26,
+    'Gs2': -25,
+    'Af2': -25,
     'A2': -24,
     'As2': -23,
     'Bf2': -23,
@@ -159,7 +193,7 @@ mid_dictionary = {
 }
 
 bass_dictionary = {
-    'ref': z_A3,
+    'ref': z_A4_feedrate,
     'E1':-29,
     'F1': -28,
     'Fs1': -27,
@@ -283,17 +317,17 @@ bass_notes = []
 
 # "last" position doesn't exist yet, so is defined here
 
-current_x = x_dim/2
+current_x = 0#x_dim
 current_y = y_dim/2
-current_z = z_dim/2
+current_z = z_dim/4
 
 last_x = current_x
 last_y = current_y
 last_z = current_z
 
-melody = song_name
-mid = song_name
-bass = song_name
+melody = song_directory
+mid = song_directory
+bass = song_directory
 melody += "/melody.txt"
 mid += "/mid.txt"
 bass += "/bass.txt"
@@ -313,7 +347,7 @@ with open(bass, "r") as f:
 
 
 # assemble text file name
-file_name = song_name
+file_name = song_directory
 file_name += '/'
 file_name += song_name
 file_name += '.gcode'
