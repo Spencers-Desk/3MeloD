@@ -4,15 +4,15 @@ import math
 # --SONG SPECIFIC INPUTS-- #
 # you need to have the melody.txt, mid.txt, and bass.txt inside a folder named after the song
 # Song name (directory)
-song_name = "Fur Elise 3"
-song_directory = "Fur Elise/Fur Elise 3"
+song_name = "Song of Storms"
+song_directory = "Song of Storms"
 
 # tempo of the song - sixteenth note is unit - if you used an eighth note rhythm divide your tempo by 2
-tempo = 68  #bpm
+tempo = 70  #bpm
 
-x_octave_adj = 0
+x_octave_adj = -1
 y_octave_adj = 0
-z_octave_adj = -1
+z_octave_adj = 0
 
 # --MACHINE PARAMETERS-- #
 # motor angle per step - commonly 3.6 - some are 1.8
@@ -30,9 +30,8 @@ x_dim = 240#180 #
 y_dim = 240#180 #
 z_dim = 250#180 #
 
-
-
-
+# Comment characters - use this to add characters that indicated a comment
+comment = ['', ' ', '#', '\n']
 
 
 
@@ -55,205 +54,507 @@ z_A4_feedrate = (f_ref / z_stepdist) * 60 * 2**z_octave_adj
 ##### Note Dictionaries #####
 melody_dictionary = {
     'ref': x_A4_feedrate,  # A4 ~ 440Hz
+    'E2': -29,
+    'e2': -29,
+    'F2': -28,
+    'f2': -28,
+    'Fs2': -27,
+    'fs2': -27,
+    'Gf2': -27,
+    'gf2': -27,
+    'G2': -26,
+    'g2': -26,
+    'Gs2': -25,
+    'gs2': -25,
+    'Af2': -25,
+    'af2': -25,
+    'A2': -24,
+    'a2': -24,
+    'As2': -23,
+    'as2': -23,
+    'Bf2': -23,
+    'bf2': -23,
+    'B2': -22,
+    'b2': -22,
+    'C3': -21,
+    'c3': -21,
+    'Cs3': -20,
+    'cs3': -20,
+    'Df3': -20,
+    'df3': -20,
+    'D3': -19,
+    'd3': -19,
+    'Ds3': -18,
+    'ds3': -18,
+    'Ef3': -18,
+    'ef3': -18,
+    'E3': -17,
+    'e3': -17,
+    'F3': -16,
+    'f3': -16,
+    'Fs3': -15,
+    'fs3': -15,
+    'Gf3': -15,
+    'gf3': -15,
     'G3': -14,
+    'g3': -14,
     'Gs3': -13,
+    'gs3': -13,
     'Af3': -13,
+    'af3': -13,
     'A3': -12,
+    'a3': -12,
     'As3': -11,
+    'as3': -11,
     'Bf3': -11,
+    'bf3': -11,
     'B3': -10,
+    'b3': -10,
     'C4': -9,
+    'c4': -9,
     'Cs4': -8,
+    'cs4': -8,
     'Df4': -8,
+    'df4': -8,
     'D4': -7,
+    'd4': -7,
     'Ds4': -6,
+    'ds4': -6,
     'Ef4': -6,
+    'ef4': -6,
     'E4': -5,
+    'e4': -5,
     'F4': -4,
+    'f4': -4,
     'Fs4': -3,
+    'fs4': -3,
     'Gf4': -3,
+    'gf4': -3,
     'G4': -2,
+    'g4': -2,
     'Gs4': -1,
+    'gs4': -1,
     'Af4': -1,
+    'af4': -1,
     'A4': 0,
+    'a4': 0,
     'As4': 1,
+    'as4': 1,
     'Bf4': 1,
+    'bf4': 1,
     'B4': 2,
+    'b4': 2,
     'C5': 3,
+    'c5': 3,
     'Cs5': 4,
+    'cs5': 4,
     'Df5': 4,
+    'df5': 4,
     'D5': 5,
+    'd5': 5,
     'Ds5': 6,
+    'ds5': 6,
     'Ef5': 6,
+    'ef5': 6,
     'E5': 7,
+    'e5': 7,
     'F5': 8,
+    'f5': 8,
     'Fs5': 9,
+    'fs5': 9,
     'Gf5': 9,
+    'gf5': 9,
     'G5': 10,
+    'g5': 10,
     'Gs5': 11,
+    'gs5': 11,
     'Af5': 11,
+    'af5': 11,
     'A5': 12,
+    'a5': 12,
     'As5': 13,
+    'as5': 13,
     'Bf5': 13,
+    'bf5': 13,
     'B5': 14,
+    'b5': 14,
     'C6': 15,
+    'c6': 15,
     'Cs6': 16,
+    'cs6': 16,
     'Df6': 16,
+    'df6': 16,
     'D6': 17,
+    'd6': 17,
     'Ds6': 18,
+    'ds6': 18,
     'Ef6': 18,
+    'ef6': 18,
     'E6': 19,
+    'e6': 19,
     'F6': 20,
+    'f6': 20,
     'Fs6': 21,
+    'fs6': 21,
     'Gf6': 21,
+    'gf6': 21,
     'G6': 22,
+    'g6': 22,
     'Gs6': 23,
+    'gs6': 23,
     'Af6': 23,
-    'A6': 24
+    'af6': 23,
+    'A6': 24,
+    'a6': 24
 }
 
 mid_dictionary = {
     'ref': y_A4_feedrate, #4225  # issue
     'E2': -29,
+    'e2': -29,
     'F2': -28,
+    'f2': -28,
     'Fs2': -27,
+    'fs2': -27,
     'Gf2': -27,
+    'gf2': -27,
     'G2': -26,
+    'g2': -26,
     'Gs2': -25,
+    'gs2': -25,
     'Af2': -25,
+    'af2': -25,
     'A2': -24,
+    'a2': -24,
     'As2': -23,
+    'as2': -23,
     'Bf2': -23,
+    'bf2': -23,
     'B2': -22,
+    'b2': -22,
     'C3': -21,
+    'c3': -21,
     'Cs3': -20,
+    'cs3': -20,
     'Df3': -20,
+    'df3': -20,
     'D3': -19,
+    'd3': -19,
     'Ds3': -18,
+    'ds3': -18,
     'Ef3': -18,
+    'ef3': -18,
     'E3': -17,
+    'e3': -17,
     'F3': -16,
+    'f3': -16,
     'Fs3': -15,
+    'fs3': -15,
     'Gf3': -15,
+    'gf3': -15,
     'G3': -14,
+    'g3': -14,
     'Gs3': -13,
+    'gs3': -13,
     'Af3': -13,
+    'af3': -13,
     'A3': -12,
+    'a3': -12,
     'As3': -11,
+    'as3': -11,
     'Bf3': -11,
+    'bf3': -11,
     'B3': -10,
+    'b3': -10,
     'C4': -9,
+    'c4': -9,
     'Cs4': -8,
+    'cs4': -8,
     'Df4': -8,
+    'df4': -8,
     'D4': -7,
+    'd4': -7,
     'Ds4': -6,
+    'ds4': -6,
     'Ef4': -6,
+    'ef4': -6,
     'E4': -5,
+    'e4': -5,
     'F4': -4,
+    'f4': -4,
     'Fs4': -3,
+    'fs4': -3,
     'Gf4': -3,
+    'gf4': -3,
     'G4': -2,
+    'g4': -2,
     'Gs4': -1,
+    'gs4': -1,
     'Af4': -1,
+    'af4': -1,
     'A4': 0,
+    'a4': 0,
     'As4': 1,
+    'as4': 1,
     'Bf4': 1,
+    'bf4': 1,
     'B4': 2,
+    'b4': 2,
     'C5': 3,
+    'c5': 3,
     'Cs5': 4,
+    'cs5': 4,
     'Df5': 4,
+    'df5': 4,
     'D5': 5,
+    'd5': 5,
     'Ds5': 6,
+    'ds5': 6,
     'Ef5': 6,
+    'ef5': 6,
     'E5': 7,
+    'e5': 7,
     'F5': 8,
+    'f5': 8,
     'Fs5': 9,
+    'fs5': 9,
     'Gf5': 9,
+    'gf5': 9,
     'G5': 10,
+    'g5': 10,
     'Gs5': 11,
+    'gs5': 11,
     'Af5': 11,
+    'af5': 11,
     'A5': 12,
+    'a5': 12,
     'As5': 13,
+    'as5': 13,
     'Bf5': 13,
+    'bf5': 13,
     'B5': 14,
+    'b5': 14,
     'C6': 15,
+    'c6': 15,
     'Cs6': 16,
+    'cs6': 16,
     'Df6': 16,
+    'df6': 16,
     'D6': 17,
+    'd6': 17,
     'Ds6': 18,
+    'ds6': 18,
     'Ef6': 18,
+    'ef6': 18,
     'E6': 19,
+    'e6': 19,
     'F6': 20,
+    'f6': 20,
     'Fs6': 21,
+    'fs6': 21,
     'Gf6': 21,
+    'gf6': 21,
     'G6': 22,
+    'g6': 22,
     'Gs6': 23,
+    'gs6': 23,
     'Af6': 23,
-    'A6': 24
+    'af6': 23,
+    'A6': 24,
+    'a6': 24
 }
 
 bass_dictionary = {
     'ref': z_A4_feedrate,
-    'E1':-29,
-    'F1': -28,
-    'Fs1': -27,
-    'Gf1': -27,
-    'G1': -26,
-    'Gs1': -25,
-    'Af1': -25,
-    'A1': -24,
-    'As1': -23,
-    'Bf1': -23,
-    'B1': -22,
-    'C2': -21,
-    'Cs2': -20,
-    'Df2': -20,
-    'D2': -19,
-    'Ds2': -18,
-    'Ef2': -18,
-    'E2': -17,
-    'F2': -16,
-    'Fs2': -15,
-    'Gf2': -15,
-    'G2': -14,
-    'Gs2': -13,
-    'Af2': -13,
-    'A2': -12,
-    'As2': -11,
-    'Bf2': -11,
-    'B2': -10,
-    'C3': -9,
-    'Cs3': -8,
-    'Df3': -8,
-    'D3': -7,
-    'Ds3': -6,
-    'Ef3': -6,
-    'E3': -5,
-    'F3': -4,
-    'Fs3': -3,
-    'Gf3': -3,
-    'G3': -2,
-    'Gs3': -1,
-    'Af3': -1,
-    'A3': 0,
-    'As3': 1,
-    'Bf3': 1,
-    'B3': 2,
-    'C4': 3,
-    'Cs4': 4,
-    'Df4': 4,
-    'D4': 5,
-    'Ds4': 6,
-    'Ef4': 6,
-    'E4': 7,
-    'F4': 8,
-    'Fs4': 9,
-    'Gf4': 9,
-    'G4': 10,
-    'Gs4': 11,
-    'Af4': 11,
-    'A4': 12,
+    'E1':-41,
+    'e1':-41,
+    'F1': -40,
+    'f1': -40,
+    'Fs1': -39,
+    'fs1': -39,
+    'Gf1': -39,
+    'gf1': -39,
+    'G1': -38,
+    'g1': -38,
+    'Gs1': -37,
+    'gs1': -37,
+    'Af1': -37,
+    'af1': -37,
+    'A1': -36,
+    'a1': -36,
+    'As1': -35,
+    'as1': -35,
+    'Bf1': -35,
+    'bf1': -35,
+    'B1': -34,
+    'b1': -34,
+    'C2': -33,
+    'c2': -33,
+    'Cs2': -32,
+    'cs2': -32,
+    'Df2': -32,
+    'df2': -32,
+    'D2': -31,
+    'd2': -31,
+    'Ds2': -30,
+    'ds2': -30,
+    'Ef2': -30,
+    'ef2': -30,
+    'E2': -29,
+    'e2': -29,
+    'F2': -28,
+    'f2': -28,
+    'Fs2': -27,
+    'fs2': -27,
+    'Gf2': -27,
+    'gf2': -27,
+    'G2': -26,
+    'g2': -26,
+    'Gs2': -25,
+    'gs2': -25,
+    'Af2': -25,
+    'af2': -25,
+    'A2': -24,
+    'a2': -24,
+    'As2': -23,
+    'as2': -23,
+    'Bf2': -23,
+    'bf2': -23,
+    'B2': -22,
+    'b2': -22,
+    'C3': -21,
+    'c3': -21,
+    'Cs3': -20,
+    'cs3': -20,
+    'Df3': -20,
+    'df3': -20,
+    'D3': -19,
+    'd3': -19,
+    'Ds3': -18,
+    'ds3': -18,
+    'Ef3': -18,
+    'ef3': -18,
+    'E3': -17,
+    'e3': -17,
+    'F3': -16,
+    'f3': -16,
+    'Fs3': -15,
+    'fs3': -15,
+    'Gf3': -15,
+    'gf3': -15,
+    'G3': -14,
+    'g3': -14,
+    'Gs3': -13,
+    'gs3': -13,
+    'Af3': -13,
+    'af3': -13,
+    'A3': -12,
+    'a3': -12,
+    'As3': -11,
+    'as3': -11,
+    'Bf3': -11,
+    'bf3': -11,
+    'B3': -10,
+    'b3': -10,
+    'C4': -9,
+    'c4': -9,
+    'Cs4': -8,
+    'cs4': -8,
+    'Df4': -8,
+    'df4': -8,
+    'D4': -7,
+    'd4': -7,
+    'Ds4': -6,
+    'ds4': -6,
+    'Ef4': -6,
+    'ef4': -6,
+    'E4': -5,
+    'e4': -5,
+    'F4': -4,
+    'f4': -4,
+    'Fs4': -3,
+    'fs4': -3,
+    'Gf4': -3,
+    'gf4': -3,
+    'G4': -2,
+    'g4': -2,
+    'Gs4': -1,
+    'gs4': -1,
+    'Af4': -1,
+    'af4': -1,
+    'A4': 0,
+    'a4': 0,
+    'As4': 1,
+    'as4': 1,
+    'Bf4': 1,
+    'bf4': 1,
+    'B4': 2,
+    'b4': 2,
+    'C5': 3,
+    'c5': 3,
+    'Cs5': 4,
+    'cs5': 4,
+    'Df5': 4,
+    'df5': 4,
+    'D5': 5,
+    'd5': 5,
+    'Ds5': 6,
+    'ds5': 6,
+    'Ef5': 6,
+    'ef5': 6,
+    'E5': 7,
+    'e5': 7,
+    'F5': 8,
+    'f5': 8,
+    'Fs5': 9,
+    'fs5': 9,
+    'Gf5': 9,
+    'gf5': 9,
+    'G5': 10,
+    'g5': 10,
+    'Gs5': 11,
+    'gs5': 11,
+    'Af5': 11,
+    'af5': 11,
+    'A5': 12,
+    'a5': 12,
+    'As5': 13,
+    'as5': 13,
+    'Bf5': 13,
+    'bf5': 13,
+    'B5': 14,
+    'b5': 14,
+    'C6': 15,
+    'c6': 15,
+    'Cs6': 16,
+    'cs6': 16,
+    'Df6': 16,
+    'df6': 16,
+    'D6': 17,
+    'd6': 17,
+    'Ds6': 18,
+    'ds6': 18,
+    'Ef6': 18,
+    'ef6': 18,
+    'E6': 19,
+    'e6': 19,
+    'F6': 20,
+    'f6': 20,
+    'Fs6': 21,
+    'fs6': 21,
+    'Gf6': 21,
+    'gf6': 21,
+    'G6': 22,
+    'g6': 22,
+    'Gs6': 23,
+    'gs6': 23,
+    'Af6': 23,
+    'af6': 23,
+    'A6': 24,
+    'a6': 24
 }
+
+
 
 
 ##### functions #####
@@ -262,8 +563,10 @@ bass_dictionary = {
 def frequency_finder(note, dictionary):
     global tempo
 
-    if note == 'r':
+    if note == 'r':  # checking for a rest
         return 0  # return feed rate of 0 for rests
+    elif note not in dictionary:
+        print(f'Incorrect note found at: {i} (note will be after this line more than likely) Note: {note}')
     else:
         return dictionary['ref'] * 2 ** (dictionary[note] / 12)    # (reference speed) * 2^((note offset)/12)
 
@@ -274,29 +577,31 @@ def kinematics(speed, this_note, last_note, dim, current_pos, last_pos):
     mid_pos = dim/2
     move_length = speed / 60 * (15 / tempo)
 
-    if this_note != last_note: # different note being played
+    if this_note != last_note:  # different note being played - move towards middle of axis
         if current_pos <= mid_pos:
-            last_pos = current_pos
+            last_pos = current_pos  # update position
             current_pos = current_pos + move_length
         elif current_pos > mid_pos:
-            last_pos = current_pos
+            last_pos = current_pos  # update position
             current_pos = current_pos - move_length
         else:
             print('Error traveled outside range')
-    if this_note == last_note and last_pos < current_pos: # moving negative to positive
-        if (current_pos + move_length) < 250:
-            last_pos = current_pos
-            current_pos = current_pos + move_length
-        else:
-            last_pos = current_pos
-            current_pos = current_pos - move_length
-    if this_note == last_note and last_pos > current_pos: # moving positive to negative
-        if (current_pos - move_length) > 5:
-            last_pos = current_pos
-            current_pos = current_pos - move_length
-        else:
-            last_pos = current_pos
-            current_pos = current_pos + move_length
+
+    if this_note == last_note:  # same note, we want to keep moving in the same direction, IF we can
+        if last_pos < current_pos:  # moving negative to positive
+            if (current_pos + move_length) > dim:  # moving same direction takes us out of axis range
+                last_pos = current_pos  # update position
+                current_pos -= move_length  # direction change
+            else:
+                last_pos = current_pos  # update position
+                current_pos += move_length  # continue same direction
+        elif last_pos > current_pos:  # moving positive to negative
+            if (current_pos - move_length) < 5:  # if out of range (don't want it to be quite 0)
+                last_pos = current_pos  # update position
+                current_pos += move_length  # change direction
+            else:
+                last_pos = current_pos  # update position
+                current_pos -= move_length  # continue same direction
 
     return current_pos, last_pos
 
@@ -315,11 +620,9 @@ melody_notes = []
 mid_notes = []
 bass_notes = []
 
-# "last" position doesn't exist yet, so is defined here
-
-current_x = 0#x_dim
+current_x = 10
 current_y = y_dim/2
-current_z = z_dim/4
+current_z = z_dim/2
 
 last_x = current_x
 last_y = current_y
@@ -335,15 +638,24 @@ bass += "/bass.txt"
 # read in melody, mid, and bass from .txt files
 with open(melody, "r") as f:
     for line in f:
-        melody_notes.append(line.rstrip())
+        if line[0] not in comment:
+            melody_notes.append(line.rstrip())
 
 with open(mid, "r") as f:
     for line in f:
-        mid_notes.append(line.rstrip())
+        if line[0] not in comment:
+            mid_notes.append(line.rstrip())
 
-with open(bass, "r") as f:
+with (open(bass, "r") as f):
     for line in f:
-        bass_notes.append(line.rstrip())
+        if line[0] not in comment:
+            bass_notes.append(line.rstrip())
+
+##### ERROR CHECKING #####
+if (len(melody_notes) != len(mid_notes)) or (len(melody_notes) != len(bass_notes)) or (len(mid_notes) != len(bass_notes)):
+    print('Different amount of notes in files')
+    print(f'Melody: {len(melody_notes)}  Mid: {len(mid_notes)}  Bass: {len(bass_notes)}')
+
 
 
 # assemble text file name
@@ -352,20 +664,24 @@ file_name += '/'
 file_name += song_name
 file_name += '.gcode'
 
-# write start gcode to file
+
 myfile = open(file_name, 'w')
-# home printer
-start_gcode = "G28\n"
-# move to start position
-start_gcode += "G1 X"
+
+
+# write start gcode to file
+start_gcode = 'G28\n'  # home printer
+start_gcode += 'G1 X'  # move to start position
 start_gcode += str(current_x)
-start_gcode += " Y"
+start_gcode += ' Y'
 start_gcode += str(current_y)
-start_gcode += " Z"
+start_gcode += ' Z'
 start_gcode += str(current_z)
-start_gcode += " F1000\n"
+start_gcode += ' F2000\n'
 # pause for 1 second
-start_gcode += "G4 P1000\n"
+start_gcode += 'G4 P1000\n'  # brief pause
+start_gcode += 'M118 Now playing: '
+start_gcode += song_name
+start_gcode += '\n'
 
 myfile.write(start_gcode)
 
@@ -389,15 +705,5 @@ for i in range(0, len(melody_notes) - 1):
 
 myfile.close()
 
-#    with open("melody.txt", "w") as text_file:
-#    print(f"G4 P{quarter*tempo}", file=text_file)
-
-# Given C_sharp sixteenth note & Current X
-# Want G1 X{current + Cs5/60*sixteenth} F{Cs}
 
 
-# at any given note
-# find feed rate for melody, mid, and bass
-# find distance for each to travel
-# find feed rate for three axis to travel at once
-# G1 X1523689 Y16235786 Z167892345 F######

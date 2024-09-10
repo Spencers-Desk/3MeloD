@@ -8,5 +8,5 @@ song_directory = "Song of Storms"
 tempo = 70  #bpm
 
 x_octave_adj = -1
-y_octave_adj = -1
-z_octave_adj = -2
+y_octave_adj = 0
+z_octave_adj = 0

@@ -9,4 +9,4 @@ tempo = 100  #bpm
 
 x_octave_adj = 0
 y_octave_adj = 0
-z_octave_adj = -1
+z_octave_adj = 0
