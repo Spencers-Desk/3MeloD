@@ -4,13 +4,13 @@ import math
 # --SONG SPECIFIC INPUTS-- #
 # you need to have the melody.txt, mid.txt, and bass.txt inside a folder named after the song
 # Song name (directory)
-song_name = "Song of Storms"
-song_directory = "Song of Storms"
+song_name = "Megalovania"
+song_directory = "Megalovania"
 
 # tempo of the song - sixteenth note is unit - if you used an eighth note rhythm divide your tempo by 2
-tempo = 70  #bpm
+tempo = 120  #bpm
 
-x_octave_adj = -1
+x_octave_adj = 0
 y_octave_adj = 0
 z_octave_adj = 0
 
