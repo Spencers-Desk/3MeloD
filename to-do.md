@@ -11,3 +11,5 @@ improve rhythm (if whole note requires too long of a move, split it in half inst
 Create web server to host the script so downloading python, IDE, files etc. isn't required
 
 Create "Music" directory for all songs
+
+Add tempo switching (should be easy)
