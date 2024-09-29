@@ -13,3 +13,5 @@ Create web server to host the script so downloading python, IDE, files etc. isn'
 Create "Music" directory for all songs
 
 Add tempo switching (should be easy)
+
+MIDI file read ins?
