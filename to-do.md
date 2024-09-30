@@ -15,3 +15,5 @@ Create "Music" directory for all songs
 Add tempo switching (should be easy)
 
 MIDI file read ins?
+
+add variable for changing subdivision method (15 / tempo)
