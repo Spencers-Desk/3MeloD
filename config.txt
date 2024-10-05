@@ -1,0 +1,24 @@
+# --GENERAL CONFIG FILE-- #
+# Inside this file is declared both the printer specific data, and the path of the configuration
+# file to read
+[printer]
+# --MACHINE PARAMETERS-- #
+# motor angle per step - commonly 3.6 - some are 1.8
+x_ang = 3.6#1.8 #
+y_ang = 3.6#1.8 #
+z_ang = 3.6#1.8 #
+
+# rotation distance per revolution (mm)
+x_rpr = 40#32 #
+y_rpr = 32#32 #
+z_rpr = 8#4 #
+
+# Printer Dimensions
+x_dim = 240#180 #
+y_dim = 240#180 #
+z_dim = 250#180 #
+
+
+[song]
+# This path is an example, but it shall be modified for your specific config filepath
+config_filepath = "Megalovania/song_config.txt"

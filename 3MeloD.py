@@ -1,34 +1,40 @@
 import math
+from config import ProjectConfig, SongConfig
+
+# Default name for the project configuration file.
+config_default_name: str = "config.txt"
+
+project_config: ProjectConfig = ProjectConfig()
+if not project_config.could_load_file(config_default_name):
+    print(f"failed to load \"{config_default_name}\" file")
+    exit(-1)
+
 
 ##### Inputs #####
-# --SONG SPECIFIC INPUTS-- #
-# you need to have the melody.txt, mid.txt, and bass.txt inside a folder named after the song
-# Song name (directory)
-song_name = "Megalovania"
-song_directory = "Megalovania"
-
-# tempo of the song - sixteenth note is unit - if you used an eighth note rhythm divide your tempo by 2
-tempo = 120  #bpm
-
-x_octave_adj = 0
-y_octave_adj = 0
-z_octave_adj = 0
-
-# --MACHINE PARAMETERS-- #
-# motor angle per step - commonly 3.6 - some are 1.8
-x_ang = 3.6#1.8 #
-y_ang = 3.6#1.8 #
-z_ang = 3.6#1.8 #
+# motor angle per step
+x_ang, y_ang, z_ang = project_config.get_printer_angles_per_step()
 
 # rotation distance per revolution (mm)
-x_rpr = 40#32 #
-y_rpr = 32#32 #
-z_rpr = 8#4 #
+x_rpr, y_rpr, z_rpr = project_config.get_printer_rot_distance_per_rev()
 
 # Printer Dimensions
-x_dim = 240#180 #
-y_dim = 240#180 #
-z_dim = 250#180 #
+x_dim, y_dim, z_dim = project_config.get_printer_dimensions()
+
+song_config: SongConfig = SongConfig()
+if not song_config.could_load_file(project_config.get_song_config_path()):
+    print("failed to load the corresponding song config file")
+    exit(-1)
+
+
+# --SONG SPECIFIC INPUTS-- #
+# you need to have the melody.txt, mid.txt, and bass.txt inside a folder directory
+song_name, song_directory = song_config.get_song_properties()
+
+# tempo of the song - sixteenth note is unit - if you used an eighth note rhythm divide your tempo by 2
+tempo = song_config.get_song_tempo()
+
+#song octave adjustment. It is free to adjust as needed
+x_octave_adj, y_octave_adj, z_octave_adj = song_config.get_song_octaves_adjustment()
 
 # Comment characters - use this to add characters that indicated a comment
 comment = ['', ' ', '#', '\n']
