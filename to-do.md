@@ -1,5 +1,6 @@
 # To-Do List for 3MeloD
 
+- [ ] Written tutorial for readme
 - [ ] Start gcode
 - [X] ~~separate config file for printer configuration (remove from 3MeloD.py)~~ ~ Accomplished by @jrfq98
 - [ ] .gcode printer requirements printout
@@ -14,6 +15,9 @@
 
 
 ## QOL/Usability Improvements
+
+### - Written tutorial for readme
+How to use 3MeloD needs to be added to readme file
 
 ### - Start gcode
 Adding an area to **config.txt** where you can write start gcode 
