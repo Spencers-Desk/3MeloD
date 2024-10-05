@@ -1,10 +1,10 @@
 import math
 from config import ProjectConfig, SongConfig
 
-# Config default filename.
-config_default_name = "config.txt"
+# Default name for the project configuration file.
+config_default_name: str = "config.txt"
 
-project_config = ProjectConfig()
+project_config: ProjectConfig = ProjectConfig()
 if not project_config.could_load_file(config_default_name):
     print(f"failed to load \"{config_default_name}\" file")
     exit(-1)
@@ -20,7 +20,7 @@ x_rpr, y_rpr, z_rpr = project_config.get_printer_rot_distance_per_rev()
 # Printer Dimensions
 x_dim, y_dim, z_dim = project_config.get_printer_dimensions()
 
-song_config = SongConfig()
+song_config: SongConfig = SongConfig()
 if not song_config.could_load_file(project_config.get_song_config_path()):
     print("failed to load the corresponding song config file")
     exit(-1)
