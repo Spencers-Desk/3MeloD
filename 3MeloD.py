@@ -12,6 +12,8 @@ if not project_config.could_load_file(config_default_name):
     print(f"failed to load \"{config_default_name}\" file")
     exit(-1)
 
+# assume 60 beats per minute, that means 60 quarter notes per second,
+subdivision: float = 4 # quarter = 1, eighth = 2, sixteenth = 4
 
 ##### Inputs #####
 # motor angle per step
@@ -81,7 +83,7 @@ def kinematics(speed: float, this_note: str, last_note: str, dim: float, current
     global tempo
 
     mid_pos: float = dim/2
-    move_length: float = speed / 60 * (15 / tempo)
+    move_length: float = speed / (60 / (tempo * subdivision))
 
     if this_note != last_note:  # different note being played - move towards middle of axis
         if current_pos <= mid_pos:
@@ -115,7 +117,7 @@ def kinematics(speed: float, this_note: str, last_note: str, dim: float, current
 # takes in x, y, and z distances, finds speed of combined move
 def vector_finder(x_: float, y_: float, z_: float) -> float:
     vec_length: float = math.sqrt(x_ ** 2 + y_ ** 2 + z_ ** 2)
-    return vec_length / (15 / tempo) * 60
+    return vec_length / subdivision * 60
 
 
 
@@ -170,7 +172,7 @@ with open(file_name, 'w') as file:
     for i in range(0, len(melody_notes) - 1):
         # check if there are any notes playing on current beat - if not, issue a pause
         if melody_notes[i] == 'r' and mid_notes[i] == 'r' and bass_notes[i] == 'r':
-            file.write(f"G4 P{15 / tempo * 1000}\n")
+            file.write(f"G4 P{(60 / (tempo * subdivision)) * 1000}\n")
         else:
             current_x, last_x = kinematics(frequency_finder(melody_notes[i], md.melody_dictionary), melody_notes[i], melody_notes[i-1], x_dim, current_x, last_x)
             current_y, last_y = kinematics(frequency_finder(mid_notes[i], md.mid_dictionary), mid_notes[i], mid_notes[i - 1], y_dim, current_y, last_y)
