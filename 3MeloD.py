@@ -7,7 +7,6 @@ import music_dictionaries as md
 config_default_name: str = "config.txt"
 
 project_config: ProjectConfig = ProjectConfig()
-from config import ProjectConfig, SongConfig
 
 if not project_config.could_load_file(config_default_name):
     print(f"failed to load \"{config_default_name}\" file")
