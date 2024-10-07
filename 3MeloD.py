@@ -12,7 +12,7 @@ if not project_config.could_load_file(config_default_name):
     print(f"failed to load \"{config_default_name}\" file")
     exit(-1)
 
-# assume 60 beats per minute, that means 60 quarter notes per second,
+# multiplies tempo by subdivision - subdivision of 4 = 4x tempo effectively treating quarter notes (common time) as sixteenth notes
 subdivision: float = 4 # quarter = 1, eighth = 2, sixteenth = 4
 
 ##### Inputs #####
@@ -117,7 +117,7 @@ def kinematics(speed: float, this_note: str, last_note: str, dim: float, current
 # takes in x, y, and z distances, finds speed of combined move
 def vector_finder(x_: float, y_: float, z_: float) -> float:
     vec_length: float = math.sqrt(x_ ** 2 + y_ ** 2 + z_ ** 2)
-    return vec_length * tempo * subdivision
+    return vec_length / (tempo * subdivision)
 
 
 
