@@ -83,7 +83,7 @@ def kinematics(speed: float, this_note: str, last_note: str, dim: float, current
     global tempo
 
     mid_pos: float = dim/2
-    move_length: float = speed / (60 / (tempo * subdivision))
+    move_length: float = speed / (tempo * subdivision)
 
     if this_note != last_note:  # different note being played - move towards middle of axis
         if current_pos <= mid_pos:
@@ -117,7 +117,7 @@ def kinematics(speed: float, this_note: str, last_note: str, dim: float, current
 # takes in x, y, and z distances, finds speed of combined move
 def vector_finder(x_: float, y_: float, z_: float) -> float:
     vec_length: float = math.sqrt(x_ ** 2 + y_ ** 2 + z_ ** 2)
-    return vec_length / (60 / (tempo * subdivision))
+    return vec_length * tempo * subdivision
 
 
 
