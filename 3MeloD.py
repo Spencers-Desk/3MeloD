@@ -117,7 +117,7 @@ def kinematics(speed: float, this_note: str, last_note: str, dim: float, current
 # takes in x, y, and z distances, finds speed of combined move
 def vector_finder(x_: float, y_: float, z_: float) -> float:
     vec_length: float = math.sqrt(x_ ** 2 + y_ ** 2 + z_ ** 2)
-    return vec_length / (tempo * subdivision)
+    return vec_length * tempo * subdivision
 
 
 
