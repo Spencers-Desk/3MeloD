@@ -16,6 +16,11 @@
 
 ## QOL/Usability Improvements
 
+### - Printer Select List
+Printer config is widely available through the Klipper GitHub page. Creating a list of the most common printers from that
+invaluable resource would allow 3MeloD users to select a printer from a list rather than finding and inputting their own
+configuration. (configuration would still be available for custom/unaccounted for printers!)
+
 ### - Written tutorial for readme
 How to use 3MeloD needs to be added to readme file
 
